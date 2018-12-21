@@ -58,7 +58,7 @@ def graph_average_open_pr_per_person():
     plt.xticks(rotation=90)
 
     plt.xlabel('People')
-    plt.ylabel('Days')
+    plt.ylabel('Hours')
     plt.title("Average PR open time")
     plt.savefig(os.path.join(DATA_PATH, 'average_open_pr_per_person.png'), bbox_inches='tight')
     plt.show()

@@ -73,7 +73,7 @@ def average_pr_open_time():
             user_average_time[user] += delta
 
         if user_average_time:
-            user_average_time[user] = user_average_time[user].days / (index + 1)
+            user_average_time[user] = (user_average_time[user].total_seconds() / 3600) / (index + 1)
         else:
             del user_average_time[user]
     return sorted(user_average_time.items(), key=lambda item: item[0])
