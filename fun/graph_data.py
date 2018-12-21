@@ -4,6 +4,7 @@ import matplotlib.dates as mdates
 import matplotlib.pyplot as plt
 
 from fun import DATA_PATH
+from fun.parse_data import average_pr_open_time
 from fun.parse_data import merge_duration_over_time
 from fun.parse_data import open_pr_per_person
 from fun.utils import rgba
@@ -37,7 +38,7 @@ def graph_open_pr_per_person():
 
     plt.bar(usernames, open_prs, color=ftw_colour)
 
-    plt.xticks(rotation=70)
+    plt.xticks(rotation=90)
 
     plt.xlabel('People')
     plt.ylabel('Open PRs')
@@ -46,5 +47,23 @@ def graph_open_pr_per_person():
     plt.show()
 
 
+def graph_average_open_pr_per_person():
+    plt.figure(num=None, figsize=(12, 6), dpi=221, facecolor='w', edgecolor='k')
+
+    average_open_pr_per_person = average_pr_open_time()
+    usernames, average = list(zip(*[(username, items) for username, items in average_open_pr_per_person]))
+
+    plt.bar(usernames, average, color=ftw_colour)
+
+    plt.xticks(rotation=90)
+
+    plt.xlabel('People')
+    plt.ylabel('Days')
+    plt.title("Average PR open time")
+    plt.savefig(os.path.join(DATA_PATH, 'average_open_pr_per_person.png'), bbox_inches='tight')
+    plt.show()
+
+
 graph_open_prs_per_day()
 graph_open_pr_per_person()
+graph_average_open_pr_per_person()

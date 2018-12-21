@@ -3,6 +3,7 @@ from datetime import datetime
 from datetime import timedelta
 
 from fun import GITHUB_DATA_PATH
+from fun.utils import datetime_from_string
 
 big_ass_data = None
 with open(GITHUB_DATA_PATH) as json_file:
@@ -51,3 +52,29 @@ def open_pr_per_person():
         people[user].append(pull)
 
     return sorted(people.items(), key=lambda item: item[0])
+
+
+def average_pr_open_time():
+    user_dict = {}
+
+    for pull in pull_iterator():
+        if not pull['merged_at']:
+            continue
+        login = pull['user']['login']
+        user_dict.setdefault(login, [])
+        user_dict[login].append(pull)
+
+    user_average_time = {}
+    for user, pulls in user_dict.items():
+        user_average_time.setdefault(user, timedelta())
+
+        for index, pull in enumerate(pulls):
+            delta = datetime_from_string(pull['merged_at']) - datetime_from_string(pull['created_at'])
+            user_average_time[user] += delta
+
+        if user_average_time:
+            user_average_time[user] = user_average_time[user].days / (index + 1)
+        else:
+            del user_average_time[user]
+    return sorted(user_average_time.items(), key=lambda item: item[0])
+
