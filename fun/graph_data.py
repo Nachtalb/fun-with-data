@@ -33,7 +33,7 @@ def graph_open_pr_per_person():
     plt.figure(num=None, figsize=(10, 6), dpi=221, facecolor='w', edgecolor='k')
 
     people_open_prs = open_pr_per_person()
-    usernames, open_prs = list(zip(*people_open_prs))
+    usernames, open_prs = list(zip(*[(username, len(items)) for username, items in people_open_prs]))
 
     plt.bar(usernames, open_prs, color=ftw_colour)
 

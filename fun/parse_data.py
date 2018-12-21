@@ -43,7 +43,7 @@ def open_pr_per_person():
             if not pull['state'] == 'open':
                 continue
             user = pull['user']['login']
-            people.setdefault(user, 0)
-            people[user] += 1
+            people.setdefault(user, [])
+            people[user].append(pull)
 
     return sorted(people.items(), key=lambda item: item[0])
