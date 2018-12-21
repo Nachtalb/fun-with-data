@@ -1,6 +1,9 @@
+import os
+
 import matplotlib.dates as mdates
 import matplotlib.pyplot as plt
 
+from fun import DATA_PATH
 from fun.parse_data import merge_duration_over_time
 from fun.parse_data import open_pr_per_person
 from fun.utils import rgba
@@ -22,6 +25,7 @@ def graph_open_prs_per_day():
     plt.xlabel('Dates')
     plt.ylabel('Open PRs')
     plt.title("Open PRs per day")
+    plt.savefig(os.path.join(DATA_PATH, 'graph_open_prs_per_day.png'), bbox_inches='tight')
     plt.show()
 
 
@@ -38,6 +42,7 @@ def graph_open_pr_per_person():
     plt.xlabel('People')
     plt.ylabel('Open PRs')
     plt.title("Open PRs per person")
+    plt.savefig(os.path.join(DATA_PATH, 'open_pr_per_person.png'), bbox_inches='tight')
     plt.show()
 
 
