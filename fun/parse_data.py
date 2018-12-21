@@ -2,6 +2,8 @@ import json
 from datetime import datetime
 from datetime import timedelta
 
+import numpy as np
+
 from fun import GITHUB_DATA_PATH
 from fun.utils import datetime_from_string
 
@@ -77,4 +79,28 @@ def average_pr_open_time():
         else:
             del user_average_time[user]
     return sorted(user_average_time.items(), key=lambda item: item[0])
+
+
+def median_pr_open_time():
+    user_dict = {}
+
+    for pull in pull_iterator():
+        if not pull['merged_at']:
+            continue
+        login = pull['user']['login']
+        user_dict.setdefault(login, [])
+        user_dict[login].append(pull)
+
+    user_median_list = {}
+    user_median = []
+    for user, pulls in user_dict.items():
+        user_median_list.setdefault(user, [])
+
+        for pull in pulls:
+            delta = datetime_from_string(pull['merged_at']) - datetime_from_string(pull['created_at'])
+            user_median_list[user].append(delta.total_seconds() / 3600)
+
+        if user_median_list:
+            user_median.append((user, np.median(user_median_list[user])))
+    return sorted(user_median, key=lambda item: item[0])
 
